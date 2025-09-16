@@ -2,79 +2,19 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manchester City Fan Page</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1, h2 { color: #1565c0; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    table, th, td { border: 1px solid #ccc; padding: 8px; }
-    th { background-color: #f0f0f0; }
-    .match { margin-bottom: 10px; }
-  </style>
 </head>
 <body>
-  <h1>Manchester City Fan Page</h1>
-  <h2>Tabela Premier League</h2>
-  <table id="plTable">
-    <thead>
-      <tr><th>Pozycja</th><th>Zespół</th><th>Punkty</th><th>Mecze</th><th>Różnica goli</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h1>Manchester City</h1>
 
-  <h2>Ostatni mecz Manchester City</h2>
-  <div id="lastMatch" class="match">Ładowanie...</div>
+  <h2>Premier League tabela</h2>
+  <div id="table">Ładowanie...</div>
 
-  <h2>Następny mecz Manchester City</h2>
-  <div id="nextMatch" class="match">Ładowanie...</div>
+  <h2>Mecze Manchester City</h2>
+  <div id="matches">Ładowanie...</div>
 
-  <script>
-    const ENDPOINT_URL = '/.netlify/functions/football';
-
-    async function fetchData() {
-      try {
-        const tableRes = await fetch(`${ENDPOINT_URL}?type=table`);
-        const table = await tableRes.json();
-        renderTable(table);
-
-        const lastRes = await fetch(`${ENDPOINT_URL}?type=last`);
-        const last = await lastRes.json();
-        renderMatch('lastMatch', last);
-
-        const nextRes = await fetch(`${ENDPOINT_URL}?type=next`);
-        const next = await nextRes.json();
-        renderMatch('nextMatch', next);
-      } catch (err) {
-        console.error(err);
-        document.querySelector("#plTable tbody").innerHTML =
-          '<tr><td colspan="5">Błąd wczytywania danych</td></tr>';
-      }
-    }
-
-    function renderTable(rows) {
-      const tbody = document.querySelector("#plTable tbody");
-      tbody.innerHTML = "";
-      rows.forEach(r => {
-        tbody.innerHTML += `<tr>
-          <td>${r.pos}</td>
-          <td>${r.team}</td>
-          <td>${r.pts}</td>
-          <td>${r.played}</td>
-          <td>${r.gd}</td>
-        </tr>`;
-      });
-    }
-
-    function renderMatch(id, match) {
-      const el = document.getElementById(id);
-      if (!match) {
-        el.textContent = "Brak danych";
-        return;
-      }
-      el.textContent = `${match.home} vs ${match.away} (${match.comp}) ${match.score ? "wynik: " + match.score : ""}`;
-    }
-
-    fetchData();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
